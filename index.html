@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brew Haven - Coffee Shop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script type="module">
+        // Import Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQJToq0lbciyZmHrs1csZDFPosL8mc5MI",
+            authDomain: "coffee-shop-app-1b7b7.firebaseapp.com",
+            databaseURL: "https://coffee-shop-app-1b7b7-default-rtdb.firebaseio.com",
+            projectId: "coffee-shop-app-1b7b7",
+            storageBucket: "coffee-shop-app-1b7b7.appspot.com",
+            messagingSenderId: "581037622584",
+            appId: "1:581037622584:web:56a359ce9473a4b6c6edcd"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Function to place an order
+        async function placeOrder() {
+        const customerName = document.getElementById("customerName").value;
+        const coffeeType = document.getElementById("coffeeType").value;
+        const quantity = parseInt(document.getElementById("quantity").value);
+        const totalPrice = quantity * 50; // Assume each coffee costs ₹50
+
+        try {
+            await addDoc(collection(db, "orders"), {
+            customerName,
+            coffeeType,
+            quantity,
+            totalPrice,
+            status: "Pending",
+            createdAt: new Date()
+            });
+            alert("Order placed successfully!");
+        } catch (error) {
+            console.error("Error adding order:", error);
+        }
+    }
+
+        // Function to fetch orders
+        async function displayOrders() {
+        const ordersList = document.getElementById("ordersList");
+        ordersList.innerHTML = "";
+    
+        const querySnapshot = await getDocs(collection(db, "orders"));
+        querySnapshot.forEach((doc) => {
+            const order = doc.data();
+            ordersList.innerHTML += `<li>${order.customerName} ordered ${order.quantity} ${order.coffeeType}(s) - ₹${order.totalPrice}</li>`;
+        });
+    }
+
+        // Expose functions globally
+        window.placeOrder = placeOrder;
+        window.displayOrders = displayOrders;
+    </script>
+
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Brew Haven Logo">
+            <h1>Brew Haven</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="cart.html">Cart <span id="cart-count">0</span></a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="home-main">
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Welcome to Brew Haven</h2>
+                <p>Discover the perfect blend for every moment</p>
+                <a href="menu.html" class="btn">View Our Menu</a>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature">
+                <i class="fas fa-coffee"></i>
+                <h3>Premium Beans</h3>
+                <p>Sourced from the finest farms around the world</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-clock"></i>
+                <h3>Fast Service</h3>
+                <p>Get your coffee fix in minutes</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-star"></i>
+                <h3>Top Quality</h3>
+                <p>Expertly crafted by our talented baristas</p>
+            </div>
+        </section>
+
+        <section class="about">
+            <h2>About Us</h2>
+            <p>At Brew Haven, we believe that great coffee brings people together. Our passion for quality brews and friendly service has made us a favorite spot for coffee lovers .</p>
+            <p>Every cup tells a story - what will yours be?</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Brew Haven</h3>
+                <p>Your cozy corner for premium coffee experiences.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Hours</h3>
+                <p>Monday - Friday: 7am - 8pm</p>
+                <p>Weekends: 8am - 9pm</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>123 Coffee Street, Vijayawada</p>
+                <p>Phone: (555) 123-4567</p>
+                <p>Email: hello@brewhaven.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="social-links">
+                <a href="https://www.facebook.com/" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/brewhevan?igsh=NHcwdGI1eWVidWsy" class="social-link"><i class="fab fa-instagram"></i></a>
+                
+                
+            </div>
+            <p>&copy; 2025 Brew Haven. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<!-- Your Firebase configuration file -->
+<script type="module" src="./src/firebase.js"></script>
+<script type="module" src="./src/login.js"></script>
+
+<script type="module" src="src/auth.js"></script>
+<script type="module" src="src/checkout.js"></script>
+
+
+</body>
+</html>

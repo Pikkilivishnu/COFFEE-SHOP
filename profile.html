@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Brew Haven</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <!-- Header content - the same as your other pages -->
+    </header>
+
+    <main class="profile-main">
+        <h2 class="page-title">My Account</h2>
+        
+        <div class="profile-container">
+            <div class="profile-sidebar">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <h3 id="user-name">Loading...</h3>
+                    <p id="user-email">Loading...</p>
+                </div>
+                
+                <ul class="profile-menu">
+                    <li class="active" data-tab="orders">My Orders</li>
+                    <li data-tab="details">Account Details</li>
+                    <li data-tab="favorites">My Favorites</li>
+                </ul>
+                
+                <button id="logout-btn" class="btn btn-secondary">Logout</button>
+            </div>
+            
+            <div class="profile-content">
+                <div id="orders-tab" class="profile-tab active">
+                    <h3>My Orders</h3>
+                    <div class="orders-list">
+                        <!-- Orders will be added here dynamically -->
+                        <p class="empty-message">You haven't placed any orders yet.</p>
+                    </div>
+                </div>
+                
+                <div id="details-tab" class="profile-tab">
+                    <h3>Account Details</h3>
+                    <form id="update-profile-form">
+                        <div class="form-group">
+                            <label for="profile-name">Full Name</label>
+                            <input type="text" id="profile-name" name="name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profile-email">Email Address</label>
+                            <input type="email" id="profile-email" name="email" disabled>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profile-phone">Phone Number</label>
+                            <input type="tel" id="profile-phone" name="phone">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profile-address">Default Delivery Address</label>
+                            <textarea id="profile-address" name="address"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Save Changes</button>
+                    </form>
+                </div>
+                
+                <div id="favorites-tab" class="profile-tab">
+                    <h3>My Favorite Coffees</h3>
+                    <div class="favorites-list">
+                        <!-- Favorites will be added here dynamically -->
+                        <p class="empty-message">You haven't added any favorites yet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <!-- Footer content - the same as your other pages -->
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore-compat.js"></script>
+    
+    <script src="js/firebase.js"></script>
+    <script src="js/main.js"></script>
+    <script src="src/auth.js"></script>
+    <script src="src/checkout.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>

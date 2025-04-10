@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - Brew Haven</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100vh; background-color: #f7f3ee;
+    }
+    .auth-container {
+      background: #fff; padding: 1.5rem; border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1); text-align: center; width: 350px;
+    }
+    .page-title {
+      font-size: 22px; color: #5a3e2b; margin-bottom: 1rem;
+    }
+    .form-group {
+      margin-bottom: 0.8rem; text-align: left;
+    }
+    label {
+      display: block; font-weight: bold; margin-bottom: 4px;
+    }
+    input, select {
+      width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px;
+    }
+    .btn {
+      width: 100%; padding: 8px; background-color: #5a3e2b;
+      color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;
+    }
+    .btn:hover { background-color: #4a3223; }
+    .auth-redirect {
+      margin-top: 8px; font-size: 14px;
+    }
+    .auth-redirect a {
+      color: #5a3e2b; text-decoration: none;
+    }
+    .auth-redirect a:hover {
+      text-decoration: underline;
+    }
+    #password-error, #signup-status {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    #password-error { color: red; }
+    #signup-status { color: green; }
+  </style>
+</head>
+<body>
+  <main class="auth-main">
+    <h2 class="page-title">Sign Up</h2>
+    <div class="auth-container">
+      <form id="signup-form" class="auth-form">
+        <div class="form-group">
+          <label for="first-name">First Name</label>
+          <input type="text" id="first-name" name="first-name" required maxlength="15" />
+        </div>
+        <div class="form-group">
+          <label for="middle-name">Middle Name</label>
+          <input type="text" id="middle-name" name="middle-name" maxlength="15" />
+        </div>
+        <div class="form-group">
+          <label for="last-name">Last Name</label>
+          <input type="text" id="last-name" name="last-name" required maxlength="15" />
+        </div>
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select id="gender" name="gender" required>
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="transgender">Transgender</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" name="dob" required />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="Enter 10-digit phone number" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required maxlength="30" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required minlength="4" maxlength="12" />
+        </div>
+
+        <p id="password-error"></p>
+        <p id="signup-status"></p>
+
+        <button type="submit" class="btn">Sign Up</button>
+        <p class="auth-redirect">Already have an account? <a href="login.html">Login</a></p>
+      </form>
+    </div>
+  </main>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // ✅ Replace with your Firebase config
+    const firebaseConfig = {
+        apiKey: "AIzaSyAQJToq0lbciyZmHrs1csZDFPosL8mc5MI",
+        authDomain: "coffee-shop-app-1b7b7.firebaseapp.com",
+        databaseURL: "https://coffee-shop-app-1b7b7-default-rtdb.firebaseio.com",
+        projectId: "coffee-shop-app-1b7b7",
+        storageBucket: "coffee-shop-app-1b7b7.appspot.com",
+        messagingSenderId: "581037622584",
+        appId: "1:581037622584:web:56a359ce9473a4b6c6edcd"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    document.getElementById('signup-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const firstName = document.getElementById('first-name').value;
+      const middleName = document.getElementById('middle-name').value;
+      const lastName = document.getElementById('last-name').value;
+      const gender = document.getElementById('gender').value;
+      const dob = document.getElementById('dob').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const passwordError = document.getElementById('password-error');
+      const status = document.getElementById('signup-status');
+
+      const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if (!strongPassword.test(password)) {
+        passwordError.textContent = "Password must be at least 8 characters long, include uppercase, lowercase, number, and special character.";
+        return;
+      } else {
+        passwordError.textContent = "";
+      }
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          return db.collection("users").doc(user.uid).set({
+            firstName,
+            middleName,
+            lastName,
+            gender,
+            dob,
+            phone,
+            email,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        })
+        .then(() => {
+          status.textContent = "User signed up successfully!";
+          document.getElementById('signup-form').reset();
+        })
+        .catch((error) => {
+          status.textContent = "Error: " + error.message;
+        });
+    });
+  </script>
+</body>
+</html>

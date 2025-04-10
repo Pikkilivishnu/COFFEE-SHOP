@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Brew Haven</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f7f3ee;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            background: #5a3e2b;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 50px;
+            margin-right: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .auth-main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .auth-container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+            margin-top: 30px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            color: #f4f0ed;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #5a3e2b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #4a3223;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .loading-spinner {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #5a3e2b;
+        }
+
+        .auth-redirect {
+            margin-top: 10px;
+        }
+
+        .auth-redirect a {
+            color: #5a3e2b;
+            text-decoration: none;
+        }
+
+        .auth-redirect a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background: #5a3e2b;
+            color: white;
+            position: absolute;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Brew Haven Logo">
+            <h1>Brew Haven</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="cart.html">Cart <span id="cart-count">0</span></a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html" class="active">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="auth-main">
+        <h2 class="page-title">Login</h2>
+
+        <div class="auth-container">
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label for="email">User Name</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <!-- Error Message -->
+                <div id="login-error" class="error-message"></div>
+
+                <!-- Login Button -->
+                <button type="submit" id="login-btn" class="btn">Login</button>
+
+                <!-- Loading Indicator (Hidden by Default) -->
+                <div id="loading" class="loading-spinner" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i> Logging in...
+                </div>
+
+                <p class="auth-redirect">Don't have an account? <a href="signup.html">Sign up</a></p>
+                <p class="auth-redirect"><a href="forgot-password.html">Forgot Password?</a></p>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 Brew Haven. All rights reserved.
+    </footer>
+
+
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+
+    <script type="module" src="./src/firebase.js"></script>
+    <script type="module" src="./src/login.js"></script>
+    
+
+
+
+</body>
+</html>

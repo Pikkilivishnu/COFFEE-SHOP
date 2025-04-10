@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Brew Haven</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Brew Haven Logo">
+            <h1>Brew Haven</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="cart.html">Cart <span id="cart-count">0</span></a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="checkout-main">
+        <h2 class="page-title">Checkout</h2>
+        
+        <div class="checkout-container">
+            <div class="checkout-form">
+                <h3>Delivery Information</h3>
+                <form id="checkout-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Delivery Address</label>
+                        <textarea id="address" name="address" required></textarea>
+                    </div>
+
+                    <h3>Payment Method</h3>
+                    <div class="payment-methods">
+                        <div class="payment-option">
+                            <input type="radio" id="payment-cash" name="payment" value="cash" checked>
+                            <label for="payment-cash">Cash on Delivery</label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="payment-card" name="payment" value="card">
+                            <label for="payment-card">Credit/Debit Card</label>
+                        </div>
+                    </div>
+
+                    <div id="card-element" class="hidden">
+                        <div class="form-group">
+                            <label for="card-number">Card Number</label>
+                            <div id="card-number"></div> <!-- Stripe will mount the card number input here -->
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="expiry">Expiry Date</label>
+                                <div id="expiry"></div> <!-- Stripe will mount the expiry input here -->
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv">CVV</label>
+                                <div id="cvv"></div> <!-- Stripe will mount the CVV input here -->
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        #checkout-button {
+                            background-color: #6F4F1F; /* Brown color */
+                            color: white; /* White text for contrast */
+                            border: none;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            cursor: pointer;
+                            border-radius: 5px; /* Optional: rounded corners */
+                        }
+                    
+                        #checkout-button:hover {
+                            background-color: #5e3e1f; /* Darker shade of brown on hover */
+                        }
+                    </style>
+
+                    <h2>Complete Your Payment</h2>
+                    <button id="checkout-button">Pay Now</button>
+                </form>
+            </div>
+
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <div class="order-items">
+                    <!-- Order items will be dynamically added here with JavaScript -->
+                </div>
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="order-subtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax (6%):</span>
+                    <span id="order-tax">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery:</span>
+                    <span id="delivery-fee">$2.99</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="order-total">$0.00</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Brew Haven</h3>
+                <p>Your cozy corner for premium coffee experiences.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Hours</h3>
+                <p>Monday - Friday: 7am - 8pm</p>
+                <p>Weekends: 8am - 9pm</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>123 Coffee Street, Vijayawada</p>
+                <p>Phone: (555) 123-4567</p>
+                <p>Email: hello@brewhaven.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Brew Haven. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="./js/main.js"></script>
+    <script src="./js/cart.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore-compat.js"></script>
+    <script type="module" src="./src/firebase.js"></script>
+    <script type="module" src="./src/auth.js"></script>
+
+    <!-- Include Stripe JS -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script type="module" src="./src/checkout.js"></script>
+
+</body>
+</html>
